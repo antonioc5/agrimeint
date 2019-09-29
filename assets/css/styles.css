@@ -1,0 +1,272 @@
+html {
+    box-sizing: border-box;
+    font-size: 62.5%; /** 1rem = 10px **/
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/*Generales*/
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.6rem;
+    line-height: 2;
+}
+
+img {
+    max-width: 100%;
+}
+.contenedor {
+    width: 95%;
+    max-width: 120rem; /** = 1200px; **/
+    margin: 0 auto;
+}
+h1 {
+    font-size: 3.8rem;
+}
+h2 {
+    font-size: 3.4rem;
+}
+h3 {
+    font-size: 3rem;
+}
+h4 {
+    font-size: 2.6rem;
+}
+
+/** Utilidades **/
+.seccion {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.fw-300 {
+    font-weight: 300;
+}
+.centrar-texto {
+    text-align: center;
+}
+.d-block {
+    display: block!important;
+}
+.contenido-centrado {
+    max-width: 800px;
+}
+.no-margin {
+    margin: 0;
+}
+
+
+/** Botones **/
+/*#e4ad50
+#366948*/
+.boton {
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.8rem;
+    padding: 1rem 3rem;
+    margin-top: 3rem;
+    display: inline-block;
+    text-align: center;
+    border: none;
+    display: block;
+    flex: 0 0 100%;
+}
+@media (min-width: 768px) {
+    .boton {
+        display: inline-block;
+        flex: 0 0 auto;
+    }
+}
+
+.boton:hover {
+    cursor: pointer;
+}
+.boton-amarillo {
+    background-color: #E08709;
+}
+.boton-crema{
+    background-color: #e4ad50;
+}
+.boton-verde {
+    background-color: #366948;
+}
+
+/** Header **/
+@media (min-width:768px) {
+    .barra {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.site-header {
+    color: #333333;
+    background-image: url(../img/fondo-agrimeint.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    height: 60rem;
+}
+
+.site-header a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.site-header h1 {
+    text-align: center;
+    font-weight: 400;
+}
+
+/** Navegacion **/
+.navegacion a {
+    text-align: center;
+    display: block;
+    font-size: 1.8rem;
+    color: #ffffff;
+    text-decoration: none;
+}
+@media (min-width: 768px) {
+    .navegacion a {
+        display: inline;
+        margin-right: 2rem;
+    }
+    .navegacion a:last-of-type {
+        margin: 0;
+    }
+}
+
+.navegacion a:hover{
+    color: #366948; 
+}
+
+/** texto-header **/
+.texto-header {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 5rem;
+}
+@media (min-width: 768px) {
+    .texto-header{
+        margin-top: 15rem;
+    }
+    .texto-header p{
+        font-size: 2.4rem;
+    }
+}
+
+/** Iconos-bienvenida **/
+@media (min-width: 768px) {
+    .iconos-bienvenida {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.icono {
+    text-align: center;
+    border: 1px solid #B5B5B5;
+    background-color: #F5F5F5;
+    margin-bottom: 2rem;
+}
+@media (min-width: 768px) {
+    .icono {
+        flex-basis: calc(33.3% - 1.3rem);
+    }
+}
+
+.icono h3 {
+    text-transform: uppercase;
+}
+.icono i{
+    margin-top: 5rem;
+    font-size: 3.9rem;
+    color: #366948;
+}
+
+
+/** Publicaciones **/
+@media (min-width: 768px) {
+    .contenedor-publicaciones{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+.publicacion {
+    border: 5px solid #B5B5B5;
+    background-color: #F5F5F5;
+    margin-bottom: 2rem;
+}
+@media (min-width: 768px) {
+    .publicacion {
+        flex: 0 0 calc(33.3% - 1.8rem);
+    }
+}
+
+.publicacion:hover{
+    border-color: #366948;
+    transition: border-color .3s ease-in-out;
+}
+
+.contenido-publicacion {
+    padding: 2rem;
+}
+.contenido-publicacion h3, 
+.contenido-publicacion p {
+    margin: 0;
+}
+.contenido-publicacion p{
+    padding: 1.2rem 0rem;
+}
+.contenido-publicacion p i{
+    font-size: 3rem;
+    color: #366948;
+    margin-right: 3rem;
+}
+.precio {
+    color: #366948;
+    font-weight: 700;
+    font-size: 2.8rem;
+}
+
+
+/** Footer **/
+.site-footer {
+    background-color: #333333;
+    margin: 0;
+    margin-top: 7rem;
+}
+.contenido-footer {
+    padding: 3rem 0;
+    text-align: center;
+}
+@media (min-width: 768px) {
+    .contenido-footer {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.site-footer nav {
+    display: none;
+}
+@media (min-width: 768px) {
+    .site-footer nav {
+        display: block;
+    }
+}
+.copyright {
+    margin: 0;
+    color: #ffffff;
+}
+
+
+
+
+
+
+
