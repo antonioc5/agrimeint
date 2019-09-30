@@ -16,7 +16,7 @@
         <header class="site-header">
             <div class="contenedor">
                 <!-- barra -->
-                <div class="barra">
+                <div class="barra-index">
                     <a href="./index.php">
                         <h1 class="no-margin">Agrimeint</h1>
                     </a>
@@ -31,11 +31,11 @@
                 <div class="texto-header">
                     <h2 class="no-margin">De la mano amiga</h2>
                     <p>somos una iniciativa que busca ayudar a los agricultores mexicanos</p>
-                    <a href="" class="boton boton-amarillo">Conoce más</a>
+                    <a href="nosotros.php" class="boton boton-amarillo">Conoce más</a>
                 </div>
             </div>
         </header> 
-        <!-- fin site-header   -->
+        <!-- fin site-header -->
 
         <section class="contenedor seccion">
             <h2 class="fw-300 centrar-texto">Compra o vende sin intermediarios</h2>
