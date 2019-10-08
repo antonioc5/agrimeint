@@ -23,7 +23,7 @@
                 <p>Fresa de calidad, riego con agua limpia disponible en tamaño y maduracion al gusto del cliente</p>
                 <p class="precio"><i class="fas fa-tag"></i>$300</p>
 
-                <a href="" class="boton boton-amarillo d-block">Ver Publicacion</a>
+                <a href="<?=base_url?>?controller=publicacion&action=verPublicacion" class="boton boton-amarillo d-block">Ver Publicacion</a>
             </div>
             <!-- fin contenido-publicacion -->
         </div>
@@ -112,6 +112,6 @@
     <!-- fin contenedor-publicaciones -->
 
     <div class="ver-todas">
-        <a href="views/publicaciones/todas.php" class="boton boton-verde">Ver todas las publicaciones</a>
+        <a href="<?=base_url?>?controller=publicacion&action=verTodas" class="boton boton-verde">Ver todas las publicaciones</a>
     </div>
 </div>

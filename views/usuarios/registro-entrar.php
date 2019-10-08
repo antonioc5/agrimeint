@@ -2,7 +2,7 @@
     <!-- entrar -->
     <div class="entrar">
         <h3 class="centrar-texto">Login</h3>
-        <form action="" method="POST">
+        <form action="<?=base_url?>?controller=usuario&action=registro" method="POST">
             <label for="email">Email:</label>    
             <input type="email" name="email" placeholder="Introduce tu correo...">
 
@@ -16,7 +16,7 @@
     <!-- registro -->
     <div class="registro">
         <h3 class="centrar-texto">Registrate</h3>
-        <form action="" method="POST">
+        <form action="<?=base_url?>?controller=usuario&action=registro" method="POST">
             <label for="nombre">Nombre:</label>
             <input type="text" name="nombre">
 
