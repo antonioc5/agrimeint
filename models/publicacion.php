@@ -5,6 +5,7 @@ class publicacion
     private $id;
     private $idUsuario;
     private $idCategoria;
+    private $imagen;
     private $titulo;
     private $precio;
     private $descripcion;
@@ -28,6 +29,10 @@ class publicacion
 
     function getIdCategoria(){
         return $this->idCategoria;
+    }
+
+    function getImagen(){
+        return $this->imagen;
     }
 
     function getTitulo(){
@@ -64,6 +69,10 @@ class publicacion
 
     function setIdCategoria($idCategoria){
         $this->idCategoria = $idCategoria;
+    }
+
+    function setImagen($imagen){
+        $this->imagen = $imagen;
     }
 
     function setTitulo($titulo){
@@ -118,8 +127,32 @@ class publicacion
 
     //funcion para guardar una publicacion 
     function save(){
-        //falta la imagen, despues del id categoria
-        $sql = "INSERT INTO publicacion VALUES (null, {$this->getIdUsuario()}, {$this->getIdCategoria()}, '{$this->getTitulo()}', {$this->getPrecio()}), '{$this->getDescripcion()}', '{$this->getEstado()}', '{$this->getMunicipio()}', CURDATE();";
+        $sql = "INSERT INTO publicacion VALUES (null, {$this->getIdUsuario()}, {$this->getIdCategoria()},'{$this->getImagen()}', '{$this->getTitulo()}', {$this->getPrecio()}), '{$this->getDescripcion()}', '{$this->getEstado()}', '{$this->getMunicipio()}', CURDATE();";
+        $save = $this->db->query($sql);
+
+        $resultado = false;
+
+        if(save)
+            $resultado = true;
+
+        return $resultado;
     }
 
+    //funcion para editar la publicacion
+    function edit(){
+
+    }
+
+    //funcion para borrar la publicacion
+    function delete(){
+        $sql = "DELETE FROM publicacion WHERE id_publicacion = {$this->getId()};";
+        $delete = $this->db->query($sql);
+
+        $resultado = false;
+
+        if($delete)
+            $resultado = true;
+
+        return $resultado;
+    }
 }

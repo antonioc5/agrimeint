@@ -6,9 +6,6 @@ require_once 'config/db.php';
 require_once 'config/parameters.php';
 require_once 'utils/utils.php';
 require_once 'views/layout/header-index.php';
-require_once 'views/layout/registro-entrar.php';
-require_once 'views/layout/bienvenida.php';
-require_once 'views/publicaciones/destacadas.php';
 
 
 if(isset($_GET['controller'])){
