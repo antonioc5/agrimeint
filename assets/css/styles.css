@@ -8,7 +8,7 @@ html {
 
 /*Generales*/
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 1.6rem;
     line-height: 2;
 }
@@ -35,6 +35,11 @@ h4 {
 }
 
 /** Utilidades **/
+.rellenado{
+    background-color: #333;
+    color: white;
+    margin: 6rem auto;
+}
 .seccion {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -213,6 +218,45 @@ h4 {
 }
 
 
+/** registro-entrada **/
+.registro-entrar{
+    margin: 8rem auto;
+}
+@media (min-width: 768px){
+    .registro-entrar{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 10rem;   
+    }
+}
+
+.registro-entrar .entrar{
+    height: 412px;
+}
+.registro-entrar .registro{
+    height: 676px;
+    margin-top: 6rem;
+}
+@media (min-width: 768px){
+    .registro-entrar .registro{
+        margin-top: 0rem;
+    }
+}
+
+.registro-entrar .entrar,
+.registro-entrar .registro{
+    background: gray;
+    color: white;
+    border: 3px inset #92228f;
+}
+
+.registro-entrar .entrar form,
+.registro-entrar .registro form{
+    width: 90%;
+    margin: 0 auto;
+}
+
+
 /** Publicaciones **/
 @media (min-width: 768px) {
     .contenedor-publicaciones{
@@ -334,7 +378,41 @@ textarea {
     align-items: center;
 }
 
+/*Buscador*/
+.buscador{
+    width: 70%;
+    margin: 3rem auto;
+    display: flex;
+}
+@media (min-width: 768px){
+    .buscador{
+        width: 50%;
+    }
+}
 
+.buscador input[type="text"]{
+    background: #4f4f4f;
+    border: 3px solid #333;
+    border-radius: 50px;
+    color: #e1e1e1;
+    height: 4.2rem;
+}
+
+.buscador button{
+    background: #4f4f4f;
+    border: 3px solid #333;
+    border-radius: 50px;
+    color: #333;
+    height: 4.1rem;
+    margin-left: -4.6rem;
+}
+
+.buscador button >i{
+    color: white;
+    font-size: 2.6rem;
+}
+
+/*Registro*/
 
 
 
