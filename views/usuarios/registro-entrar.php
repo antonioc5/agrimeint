@@ -1,3 +1,5 @@
+
+<?php if(!isset($_SESSION['usuario_identificado'])) : ?>
 <div class="registro-entrar contenedor">
     <!-- entrar -->
     <div class="entrar">
@@ -5,12 +7,16 @@
         <form action="<?=base_url?>?controller=usuario&action=login" method="POST">
             <label for="email">Email:</label>    
             <input type="email" name="email" placeholder="Introduce tu correo..." required>
+            <?php echo isset($_SESSION['login_errores_campos']['email']) ? "<div class='mensaje error'>{$_SESSION['login_errores_campos']['email']}</div>" : ""; ?>
 
             <label for="password">Contraseña:</label>
             <input type="password" name="password" placeholder="Introduce tu contraseña..." required>
+            <?php echo isset($_SESSION['login_errores_campos']['password']) ? "<div class='mensaje error'>{$_SESSION['login_errores_campos']['password']}</div>" : ""; ?>
 
             <input type="submit" name="Entrar" class="boton boton-amarillo" value="Entrar">
         </form>
+
+        <?php echo isset($_SESSION['login_errores']) ? "<div class='mensaje error'>{$_SESSION['login_errores']}</div>" : ""; ?>
     </div>
 
     <!-- registro -->
@@ -44,6 +50,9 @@
     </div>
 
     <?= utils::deleteSession('registro'); ?>
+    <?= utils::deleteSession('login_errores'); ?>
+    <?= utils::deleteSession('login_errores_campos'); ?>
 
 </div>
+<?php endif; ?>
 

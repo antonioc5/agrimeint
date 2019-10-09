@@ -11,4 +11,5 @@ class utils
             unset($_SESSION[$name]);
         }
     }
+    
 }

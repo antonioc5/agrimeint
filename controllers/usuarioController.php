@@ -39,28 +39,28 @@ class usuarioController
             $errores = array();
 
             //verificamos que esos campos no vengan vacios y que vengan correctos, y los limpiamos y los escapamos para mandarlos seguros
-            if (!empty($nombre) && !is_numeric($nombre))
-                $nombre = mysqli_real_escape_string($usuario->getDb(), $nombre);
+            if (!empty(trim($nombre)) && !is_numeric($nombre) && $nombre != false)
+                $usuario->setNombre(mysqli_real_escape_string($usuario->getDb(), $nombre));
             else
                 $errores['nombre'] = "El nombre no es correcto";
 
-            if (!empty($apellidos) && !is_numeric($apellidos))
-                $apellidos = mysqli_real_escape_string($usuario->getDb(), $apellidos);
+            if (!empty(trim($apellidos)) && !is_numeric($apellidos) && $apellidos != false)
+                $usuario->setApellidos(mysqli_real_escape_string($usuario->getDb(), $apellidos));
             else
                 $errores['apellidos'] = "Los apellidos no son correctos";
 
-            if (!empty($email) && preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email))
-                $email = mysqli_real_escape_string($usuario->getDb(), $email);
+            if (!empty(trim($email)) && preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email) && $email != false)
+                $usuario->setEmail(mysqli_real_escape_string($usuario->getDb(), $email));
             else
                 $errores['email'] = "El email no es correcto";
 
-            if (!empty($telefono) && is_numeric($telefono))
-                $telefono = mysqli_real_escape_string($usuario->getDb(), $telefono);
+            if (!empty(trim($telefono)) && is_numeric($telefono) && $telefono != false)
+                $usuario->setTelefono(mysqli_real_escape_string($usuario->getDb(), $telefono));
             else
                 $errores['telefono'] = "El telefono no es correcto";
 
-            if (!empty($password))
-                $password = mysqli_real_escape_string($usuario->getDb(), $password);
+            if (!empty(trim($password)) && $password != false)
+                $usuario->setPassword(mysqli_real_escape_string($usuario->getDb(), $password));
             else
                 $errores['password'] = "La contraseña viene vacia, favor de rellenarla";
 
@@ -69,13 +69,6 @@ class usuarioController
 
             //verificamos no haya habido ningun error
             if (count($errores) == 0) {
-                //los datos estan correctos, los guardamos en el objeto usuario
-                $usuario->setNombre($nombre);
-                $usuario->setApellidos($apellidos);
-                $usuario->setEmail($email);
-                $usuario->setTelefono($telefono);
-                $usuario->setPassword($password);
-
                 //ahora verificamos que el email que haya introducido no este registrado
                 $query = "select email from usuario where email = '{$usuario->getEmail()}';";
                 $email_ok = mysqli_query($usuario->getDb(), $query);
@@ -88,10 +81,10 @@ class usuarioController
 
                     //insertamos los datos a la db con la funcion save del objeto usuario
                     $save = $usuario->save();
-            
+
                     // var_dump($save);
                     // die(mysqli_error($usuario->getDb()));
-                    
+
                     if ($save) {
                         //mandaremos un mensaje al usuario mediante la session, indicandole que su registro fue correcto
                         if (!isset($_SESSION['registro']))
@@ -132,8 +125,7 @@ class usuarioController
             }
 
             //redireccionamos a la pagina de registro
-            header('Location:'.base_url.'?controller=usuario&action=index');
-
+            header('Location:' . base_url . '?controller=usuario&action=index');
         } else {
             //no existio post o llego vacio
             echo "<div class='mensaje error'>Hubo un error</div>";
@@ -142,7 +134,68 @@ class usuarioController
 
     //funcion para iniciar sesion
     public function login()
-    { 
+    {
+        //comprobamos que nos llegue bien el post
+        if (isset($_POST) && !empty($_POST)) {
+            //var_dump($_POST);
+            //comprobamos que los datos nos lleguen
+            $email = isset($_POST['email']) ? $_POST['email'] : false;
+            $password = isset($_POST['password']) ? $_POST['password'] : false;
 
+            //creamos un arreglo para guardar errores
+            $errores = array();
+
+            //creamos un objeto del modelo usuario
+            $usuario = new usuario();
+
+            //verificamos que los datos no esten vacios o no vengan mal y los guardamos en el objeto
+            if (!empty(trim($email)) && preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email) && $email != false)
+                $usuario->setEmail(mysqli_real_escape_string($usuario->getDb(), $email));
+            else
+                $errores['email'] = "El email no es correcto";
+
+            if (!empty(trim($password)) && $password != false)
+                $usuario->setPassword(mysqli_real_escape_string($usuario->getDb(), $password));
+            else
+                $errores['password'] = "La contraseña viene vacia, favor de rellenarla";
+
+            //verificamos que no haya ningun error
+            if(count($errores) == 0){
+                //llamamos el metodo login
+                $login = $usuario->login();
+                // var_dump($login);
+                // die();
+
+                if($login['resultado']){
+                    //creamos una session para el usuario
+                    if(!isset($_SESSION['usuario_identificado'])){
+                        $_SESSION['usuario_identificado'] = $login['usuario'];
+                    }
+                }else{
+                    //creamos una sessiones de errores
+                    if(!isset($_SESSION['login_errores'])){
+                        $_SESSION['login_errores'] = $login['error'];
+                    }
+                }
+
+            }else{
+                //creamos una session de errores
+                if(!isset($_SESSION['login_errores_campos'])){
+                    $_SESSION['login_errores_campos'] = $errores;
+                }
+            }
+
+            //redireccionamos a la pagina de registro
+            header('Location:'.base_url);
+
+        }else{
+            echo "<div class='mensaje error'>Hubo un error</div>";
+        }
     }
+
+    public function logout(){
+        utils::deleteSession("usuario_identificado");
+        header('Location:'.base_url);
+    }
+
 }
