@@ -60,6 +60,24 @@ h4 {
     margin: 0;
 }
 
+.mensaje{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+    background-color: #366948;
+    margin: 20px 0;
+}
+
+.error{
+    background-color: rgba(224, 9, 9, 0.849);
+}
+
+.advertencia{
+    background-color: #E08709;
+}
+
 
 /** Botones **/
 /*#e4ad50
@@ -412,7 +430,6 @@ textarea {
     font-size: 2.6rem;
 }
 
-/*Registro*/
 
 
 

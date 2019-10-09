@@ -15,6 +15,11 @@ class usuario{
     public function __construct()
     {
         $this->db = Database::connect();
+        $this->nivel = null;
+    }
+
+    function getDb(){
+        return $this->db;
     }
 
     function getId(){
@@ -75,7 +80,7 @@ class usuario{
 
     //funcion pra guardar un usuario
     function save(){
-        $sql = "INSERT INTO usuario VALUES (null, '{$this->getNombre()}', '{$this->getApellidos()}', '{$this->getEmail()}', '{$this->getTelefono()}', '{$this->getPassword()}', '{$this->getNivel()}', CURDATE(), null);";
+        $sql = "INSERT INTO usuario VALUES (null, '{$this->getNombre()}', '{$this->getApellidos()}', '{$this->getEmail()}', '{$this->getTelefono()}', '{$this->getPassword()}', null, CURDATE(), null);";
         $save = $this->db->query($sql);
 
         $resultado = false;
