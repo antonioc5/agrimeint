@@ -151,4 +151,33 @@ class usuario
 
         return $login;
     }
+
+    //funcion para obtener un usuario
+    public function getUsuario(){
+        $usuario = false;
+
+        $sql = "SELECT * FROM usuario WHERE id_usuario = {$this->id};";
+        $resultado = $this->db->query($sql);
+
+        if($resultado && $resultado->num_rows==1){
+            $usuario = $resultado->fetch_object();
+        }
+
+        return $usuario;
+    }
+
+    //funcion para modificar o actualizar un usuario
+    public function modificar(){
+        $actualizado = false;
+
+        $sql = "UPDATE usuario SET nombre = '{$this->nombre}', apellidos = '{$this->apellidos}', telefono = '{$this->telefono}' WHERE id_usuario = {$this->id};";
+        $resultado = $this->db->query($sql);
+
+        if($resultado){
+            $actualizado = true;
+        }
+
+        return $actualizado;
+    }
+
 }

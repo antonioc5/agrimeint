@@ -13,9 +13,11 @@ class usuarioController
     //funcion para ver el formulario de registro
     public function registro()
     {
-        echo "<h3 class='fw-300 centrar-texto'>Inicia sesion o crea una cuenta nueva</h3>";
+        if (!utils::isIdentity())
+            require_once 'views/usuarios/registro-entrar.php';
 
-        require_once 'views/usuarios/registro-entrar.php';
+        else
+            header("Location:" . base_url);
     }
 
     //funcion para guardar un usuario en la bd
@@ -129,6 +131,7 @@ class usuarioController
         } else {
             //no existio post o llego vacio
             echo "<div class='mensaje error'>Hubo un error</div>";
+            header("Refresh:4; url=" . base_url);
         }
     }
 
@@ -160,42 +163,149 @@ class usuarioController
                 $errores['password'] = "La contraseña viene vacia, favor de rellenarla";
 
             //verificamos que no haya ningun error
-            if(count($errores) == 0){
+            if (count($errores) == 0) {
                 //llamamos el metodo login
                 $login = $usuario->login();
                 // var_dump($login);
                 // die();
 
-                if($login['resultado']){
+                if ($login['resultado']) {
                     //creamos una session para el usuario
-                    if(!isset($_SESSION['usuario_identificado'])){
+                    if (!isset($_SESSION['usuario_identificado'])) {
                         $_SESSION['usuario_identificado'] = $login['usuario'];
                     }
-                }else{
+                } else {
                     //creamos una sessiones de errores
-                    if(!isset($_SESSION['login_errores'])){
+                    if (!isset($_SESSION['login_errores'])) {
                         $_SESSION['login_errores'] = $login['error'];
                     }
                 }
-
-            }else{
+            } else {
                 //creamos una session de errores
-                if(!isset($_SESSION['login_errores_campos'])){
+                if (!isset($_SESSION['login_errores_campos'])) {
                     $_SESSION['login_errores_campos'] = $errores;
                 }
             }
 
             //redireccionamos a la pagina de registro
-            header('Location:'.base_url);
-
-        }else{
+            header('Location:' . base_url);
+        } else {
             echo "<div class='mensaje error'>Hubo un error</div>";
+            header("Refresh:3; url=" . base_url);
         }
     }
 
-    public function logout(){
+    //funcion para cerrar sesion
+    public function logout()
+    {
         utils::deleteSession("usuario_identificado");
-        header('Location:'.base_url);
+        header('Location:' . base_url);
     }
 
+    //funcion para ver mi cuenta
+    public function miCuenta()
+    {
+        //comprobamos que el usuario este identificado
+        if (utils::isIdentity()) {
+            //guardamos los datos del usuario
+            $usuario = $_SESSION['usuario_identificado'];
+            // var_dump($usuario);
+
+            //mandamos a la vista
+            require_once 'views/usuarios/mi-cuenta.php';
+        } else {
+            header('Location:' . base_url);
+        }
+    }
+
+    //funcion para actualizar los datos del usuario
+    public function actualizar()
+    {
+        //comprobamos que el usuario este identificado
+        if (utils::isIdentity()) {
+            //comprobamos que nos llegue bien el post
+            if (isset($_POST) && !empty($_POST)) {
+                // var_dump($_POST);
+                //comprobamos que los datos del post existan
+                $id = isset($_POST['id']) ? $_POST['id'] : false;
+                $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false;
+                $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
+                $telefono = isset($_POST['telefono']) ? $_POST['telefono'] : false;
+                
+                //creamos un arreglo de errores para guardar los posibles errores en los campos
+                $errores = array();
+
+                //creamos un objeto del modelo usuario
+                $usuario = new usuario();
+
+                //comprobamos que los datos vengan correctos
+                if (!empty(trim($id)) && is_numeric($id) && $id != false)
+                    $usuario->setId(mysqli_real_escape_string($usuario->getDb(), $id));
+                else
+                    $errores['id'] = "El id no es correcto";
+
+                if (!empty(trim($nombre)) && !is_numeric($nombre) && $nombre != false)
+                    $usuario->setNombre(mysqli_real_escape_string($usuario->getDb(), $nombre));
+                else
+                    $errores['nombre'] = "El nombre no es correcto";
+
+                if (!empty(trim($apellidos)) && !is_numeric($apellidos) && $apellidos != false)
+                    $usuario->setApellidos(mysqli_real_escape_string($usuario->getDb(), $apellidos));
+                else
+                    $errores['apellidos'] = "Los apellidos no son correctos";
+
+                if (!empty(trim($telefono)) && is_numeric($telefono) && $telefono != false)
+                    $usuario->setTelefono(mysqli_real_escape_string($usuario->getDb(), $telefono));
+                else
+                    $errores['telefono'] = "El telefono no es correcto";
+
+                //comprobamos que no haya ningun error
+                if(sizeof($errores) == 0){
+                    //llamamos el metodo que va actualizar al usuario (modificar)
+                    $actualizado = $usuario->modificar();
+
+                    // echo mysqli_error($usuario->getDb());
+                    // die();
+
+                    //comprobamos que se haya ejecutado correctamente la consulta
+                    if($actualizado){
+                        //sacamos el usuario de la bd para obtener sus nuevos datos
+                        $usuario_actualizado = $usuario->getUsuario();
+                        // var_dump($usuario_actualizado);
+                        // var_dump($_SESSION);
+
+                        if($usuario_actualizado){
+                            //actualizamos la session del usuario con sus nuevos datos
+                            if(isset($_SESSION['usuario_identificado'])){
+                                $_SESSION['usuario_identificado'] = $usuario_actualizado;
+                            }
+                        }
+
+                        //creamos una session para indicar que la actualizacion fue correcta
+                        if(!isset($_SESSION['actualizar'])){
+                            $_SESSION['actualizar'] = "<div class='mensaje'>Datos actualizados correctamente!</div>";
+                        }
+                    } else{
+                        //creamos una session para indicar que fallo la actualizacion
+                        if(!isset($_SESSION['actualizar'])){
+                            $_SESSION['actualizar'] = "<div class='mensaje error'>Hubo un error al actualizar</div>";
+                        }
+                    }
+                } else{
+                    //creamos una session de errores
+                    if(!isset($_SESSION['actualizar_errores'])){
+                        $_SESSION['actualizar_errores'] = $errores;
+                    }
+                }
+
+                header('Location:'.base_url.'?controller=usuario&action=miCuenta');
+
+            } else {
+                echo "<div class='mensaje error'>Hubo un error</div>";
+                header("Refresh:3; url=" . base_url);
+            }
+        } else {
+            header('Location:' . base_url);
+        }
+    }
 }

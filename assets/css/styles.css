@@ -321,6 +321,17 @@ h4 {
     font-size: 2.8rem;
 }
 
+.publicacion img{
+    display: block;
+    height: 300px;
+    margin: 0px auto;
+    line-height: 0;
+}
+.contenido-publicacion h3{
+    line-height: 0;
+    margin-bottom: 25px;
+}
+
 
 /** Footer **/
 .site-footer {
@@ -428,6 +439,11 @@ textarea {
 .buscador button >i{
     color: white;
     font-size: 2.6rem;
+}
+
+/*mi-cuenta*/
+.mis-datos{
+    width: 70%;
 }
 
 

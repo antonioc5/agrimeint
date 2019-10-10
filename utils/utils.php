@@ -4,6 +4,7 @@
 class utils
 {
 
+    //funcion para borrar una session
     public static function deleteSession($name)
     {
         if (isset($_SESSION[$name])) {
@@ -12,4 +13,14 @@ class utils
         }
     }
     
+    //funcion para comprobar que el usuario este identificado o logueado
+    public static function isIdentity(){
+        $identity = false;
+
+        if(isset($_SESSION['usuario_identificado'])){
+            $identity = true;
+        }
+
+        return $identity;
+    }
 }

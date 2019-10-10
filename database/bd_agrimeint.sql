@@ -31,7 +31,7 @@ CREATE TABLE publicacion(
 id_publicacion  INT(11) NOT NULL AUTO_INCREMENT,
 id_usuario  INT(11) NOT NULL,
 id_categoria  INT(11) NOT NULL,
-imagen BLOB, 
+imagen VARCHAR(50), 
 titulo  VARCHAR(255),
 precio FLOAT(10,2),
 descripcion TEXT,

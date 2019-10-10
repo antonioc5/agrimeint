@@ -1,5 +1,7 @@
 
-<?php if(!isset($_SESSION['usuario_identificado'])) : ?>
+<?php if(!utils::isIdentity()) : ?>
+
+<h3 class='fw-300 centrar-texto'>Inicia sesion o crea una cuenta nueva</h3>
 <div class="registro-entrar contenedor">
     <!-- entrar -->
     <div class="entrar">
