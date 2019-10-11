@@ -1,10 +1,11 @@
-<?php if (isset($todas)) : ?>
+<div class="seccion contenedor">
+
     <!-- buscador -->
     <form action="" method="POST" class="buscador">
         <input type="text" placeholder="Busca un producto...">
         <button type="submit">
             <i class="fa fa-search"></i>
-        </button>
+        </button>    
     </form>
 
     <!-- contenedor-publicaciones -->
@@ -28,8 +29,4 @@
         <!-- fin publicacion -->
     </div>
     <!-- fin contenedor-publicaciones -->
-
-<?php else : ?>
-    <h2 class="centrar-texto fw-300">Hubo un error!</h2>
-
-<?php endif; ?>
+</div>

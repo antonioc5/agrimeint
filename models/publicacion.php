@@ -19,6 +19,10 @@ class publicacion
         $this->db = Database::connect();
     }
 
+    function getDb(){
+        return $this->db;
+    }
+
     function getId(){
         return $this->id;
     }
@@ -131,15 +135,16 @@ class publicacion
     //funcion para guardar una publicacion 
     function save()
     {
-        $sql = "INSERT INTO publicacion VALUES (null, {$this->getIdUsuario()}, {$this->getIdCategoria()},'{$this->getImagen()}', '{$this->getTitulo()}', {$this->getPrecio()}), '{$this->getDescripcion()}', '{$this->getEstado()}', '{$this->getMunicipio()}', CURDATE();";
+        $sql = "INSERT INTO publicacion VALUES (null, {$this->getIdUsuario()}, {$this->getIdCategoria()},'{$this->getImagen()}', '{$this->getTitulo()}', {$this->getPrecio()}, '{$this->getDescripcion()}', '{$this->getEstado()}', '{$this->getMunicipio()}', NOW());";
         $save = $this->db->query($sql);
-
+        
         $resultado = false;
 
-        if(save)
+        if($save)
             $resultado = true;
 
         return $resultado;
+
     }
 
     //funcion para editar la publicacion

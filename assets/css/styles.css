@@ -328,7 +328,7 @@ h4 {
     line-height: 0;
 }
 .contenido-publicacion h3{
-    line-height: 0;
+    line-height: 1;
     margin-bottom: 25px;
 }
 
@@ -432,12 +432,18 @@ textarea {
 }
 
 /*mi-cuenta*/
-.mis-datos{
-    width: 70%;
+@media (min-width: 768px) {
+    .mis-datos{
+        width: 70%;
+    }
 }
 
+
 /*Publicar*/
-.publicar{
-    width: 70%;
+@media (min-width: 768px) {
+    .publicar{
+        width: 70%;
+    }
 }
+
 

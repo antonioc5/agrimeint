@@ -3,7 +3,8 @@ require_once 'models/publicacion.php';
 
 class publicacionController{
 
-    public function index(){
+    public function index()
+    {
         //echo "Controlador publicaciones, action index";
 
         //renderizar las vistas
@@ -49,24 +50,137 @@ class publicacionController{
         }
     }
 
-    //funcion para mostrar el formulario de crear
-    public function crear()
+    //funcion para mostrar el formulario de publicar
+    public function publicar()
     {
         //comprobamos que el usuario este identificado
+        if(utils::isIdentity()){
+            //manda a la vista
+            require_once 'views/publicaciones/publicar.php';
 
-        //manda a la vista
-        require_once 'views/publicaciones/crear.php';
+        } else{
+            header('Location:'.base_url);
+        }
     }
 
     //funcion para guardar una publicacion
     public function guardar()
     {
+        //verificamos que el usuario este logeado
+        if(utils::isIdentity()){
+            //verificamos que post nos llegue bien
+            if(isset($_POST) && !empty($_POST)){
+                // die(var_dump($_POST));
+                //comprobamos que los datos del post existan
+                $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : false;
+                $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : false;
+                $precio = isset($_POST['precio']) ? $_POST['precio'] : false;
+                $descripcion = isset($_POST['descripcion']) ? $_POST['descripcion'] : false;
+                $estado = isset($_POST['estado']) ? $_POST['estado'] : false;
+                $municipio = isset($_POST['municipio']) ? $_POST['municipio'] : false;
 
+                //creamos el arreglo de errores para guardar los errores de los campos
+                $errores = array();
+
+                //comprobamos que la imagen nos llegue bien
+                if(isset($_FILES)){
+                    // die(var_dump($_FILES));
+                    $nombre = $_FILES['imagen']['name'];
+                    $tipo = $_FILES['imagen']['type'];
+                    $ruta_temporal = $_FILES['imagen']['tmp_name'];
+
+                    //verificamos que tenga formato correcto
+                    if($tipo == "image/jpg" || $tipo == "image/jpeg" || $tipo == "image/png" || $tipo == "image/gif"){
+                        //si no existe la carpeta imagenes-subidas dentro de assets, la creamos
+                        if(!is_dir('assets/imagenes-subidas/')){  
+                            mkdir('assets/imagenes-subidas', 0777);  
+                        }
+
+                        move_uploaded_file($ruta_temporal, 'assets/imagenes-subidas/'.$nombre);  //mueve un archivo, aqui se mueve el archivo temporal a la carpeta o ruta imagenes-subidas/nombredelarchivo
+
+                    } else{
+                        $errores['imagen'] = "<div class='mensaje error'>El tipo de la imagen no es correcto</div>";
+                    }
+
+                } else{
+                    $errores['imagen'] = "<div class='mensaje error'>Error al subir la imagen</div>";
+                }
+
+                //creamos el objeto del modelo publicacion
+                $publicacion = new publicacion();
+
+                //comprobamos que los datos vengan correctos para guardarlos en el objeto
+                if(!empty(trim($categoria)) && $categoria != false)
+                    $publicacion->setIdCategoria((int) mysqli_real_escape_string($publicacion->getDb(),$categoria));
+                else
+                    $errores['categoria'] = "<div class='mensaje error'>Error al seleccionar categoria</div>";
+
+                if(!empty(trim($titulo)) && $titulo != false)
+                    $publicacion->setTitulo(mysqli_real_escape_string($publicacion->getDb(),$titulo));
+                else
+                    $errores['titulo'] = "<div class='mensaje error'>El titulo no es correcto</div>";
+
+                if(!empty(trim($precio)) && $precio != false)
+                    $publicacion->setPrecio((float) mysqli_real_escape_string($publicacion->getDb(),$precio));
+                else
+                    $errores['precio'] = "<div class='mensaje error'>El precio no es correcto</div>";
+
+                if(!empty(trim($descripcion)) && $descripcion != false)
+                    $publicacion->setDescripcion(mysqli_real_escape_string($publicacion->getDb(),$descripcion));
+                else
+                    $errores['descripcion'] = "<div class='mensaje error'>La Descripccion viene vacia</div>";
+
+                if(!empty(trim($estado)) && $estado != false)
+                    $publicacion->setEstado(mysqli_real_escape_string($publicacion->getDb(),$estado));
+                else
+                    $errores['estado'] = "<div class='mensaje error'>El estado no es correcto</div>";
+
+                if(!empty(trim($municipio)) && $municipio != false)
+                    $publicacion->setMunicipio(mysqli_real_escape_string($publicacion->getDb(),$municipio));
+                else
+                    $errores['municipio'] = "<div class='mensaje error'>El municipio viene vacio</div>";
+
+                $publicacion->setIdUsuario((int) $_SESSION['usuario_identificado']->id_usuario);
+                $publicacion->setImagen($nombre);
+
+                //verificamos que no haya ningun error
+                if(count($errores) == 0){
+                    //llamamos al metodo save del objeto para guardar la publicacion en la bd
+                    $publicado = $publicacion->save();
+
+                    if($publicado){
+                        //creamos una session para indicarle al usuario que la publicacion se guardo 
+                        if(!isset($_SESSION['publicacion'])){
+                            $_SESSION['publicacion'] = "<div class='mensaje'>Producto publicado con exito!</div>";
+                        }
+                    } else{
+                        if(!isset($_SESSION['publicacion'])){
+                            $_SESSION['publicacion'] = "<div class='mensaje error'>Hubo un error al publicar el producto</div>";
+                        }
+                    }
+
+                } else{
+                    //creamos una session para los errores
+                    if(!isset($_SESSION['publicacion_error'])){
+                        $_SESSION['publicacion_error']  = $errores;
+                    }
+                }
+
+            } else{
+                echo "<div class='mensaje error'>Hubo un error</div>";
+                header("Refresh:3; url=" . base_url);
+            }
+
+            header('Location:'.base_url.'?controller=publicacion&action=publicar');
+
+        } else{
+            header('Location:'.base_url);
+        }
     }
 
     //funcion para editar una publicacion
     public function editar()
     {
-
+    
     }
 }

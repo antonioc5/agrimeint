@@ -25,15 +25,4 @@ class utils
         return $identity;
     }
 
-    //funcion para mostrar todas las categorias
-    public static function getAllCategorias(){
-        //creo un objeto del modelo categorias
-        $categoria = new categoria();
-
-        //llamo el metodo getAll para obtener todas las categorias
-        $categorias = $categoria->getAll();
-
-        //regreso todas las categorias en un objeto
-        return $categorias;
-    }
 }
