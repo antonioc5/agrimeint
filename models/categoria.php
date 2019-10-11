@@ -29,7 +29,7 @@ class categoria{
     //metodo para obtener todas las categorias
     function getAll(){
         $categorias = $this->db->query("SELECT * FROM categoria ORDER BY id_categoria DESC;");
-        return $categorias->fetch_object();
+        return $categorias;
     }
 
     //metodo que obtiene una sola categoria

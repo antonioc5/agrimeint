@@ -392,19 +392,9 @@ select {
 input[type="radio"]{
     width: auto;
     margin: 0;
-}
-select {
-    -webkit-appearance: none;
-    appearance: none;
-}
+} 
 textarea {
     height: 20rem;
-}
-.forma-contacto {
-    max-width:30rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 /*Buscador*/
@@ -446,8 +436,8 @@ textarea {
     width: 70%;
 }
 
-
-
-
-
+/*Publicar*/
+.publicar{
+    width: 70%;
+}
 

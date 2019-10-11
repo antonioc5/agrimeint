@@ -100,7 +100,8 @@ class publicacion
     }
 
     //funcion para obtener todas las publicaciones 
-    function getAll(){
+    function getAll()
+    {
         $publicaciones = $this->db->query("SELECT * FROM publicacion ORDER BY id_publicacion DESC;");
 
         return $publicaciones;
@@ -112,21 +113,24 @@ class publicacion
     }
 
     //funcion para obtener publicaciones aleatorias
-    function getRandom($limit){
+    function getRandom($limit)
+    {
         $publicaciones = $this->db->query("SELECT * FROM publicacion ORDER BY RAND() LIMIT $limit;");
 
         return $publicaciones;
     }
 
     //funcion para obtener una sola publicacion 
-    function getOne(){
+    function getOne()
+    {
         $publicacion = $this->db->query("SELECT * FROM publicacion WHERE id_publicacion = {$this->getId()};");
         
-        return $publicacion->fetch_object();
+        return $publicacion;
     }
 
     //funcion para guardar una publicacion 
-    function save(){
+    function save()
+    {
         $sql = "INSERT INTO publicacion VALUES (null, {$this->getIdUsuario()}, {$this->getIdCategoria()},'{$this->getImagen()}', '{$this->getTitulo()}', {$this->getPrecio()}), '{$this->getDescripcion()}', '{$this->getEstado()}', '{$this->getMunicipio()}', CURDATE();";
         $save = $this->db->query($sql);
 
@@ -139,12 +143,14 @@ class publicacion
     }
 
     //funcion para editar la publicacion
-    function edit(){
+    function edit()
+    {
 
     }
 
     //funcion para borrar la publicacion
-    function delete(){
+    function delete()
+    {
         $sql = "DELETE FROM publicacion WHERE id_publicacion = {$this->getId()};";
         $delete = $this->db->query($sql);
 
@@ -154,5 +160,17 @@ class publicacion
             $resultado = true;
 
         return $resultado;
+    }
+
+    //funcion para obtener las publicaciones de un usuario
+    function publicacionesUsuario($id)
+    {
+        $sql ="SELECT * FROM publicacion INNER JOIN usuario 
+            ON usuario.id_usuario = publicacion.id_usuario 
+            WHERE publicacion.id_usuario = {$id} ORDER BY publicacion.id_publicacion";
+
+        $publicaciones = $this->db->query($sql);
+
+        return $publicaciones;
     }
 }
