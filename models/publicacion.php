@@ -144,13 +144,20 @@ class publicacion
             $resultado = true;
 
         return $resultado;
-
     }
 
-    //funcion para editar la publicacion
-    function edit()
+    //funcion para actualizar la publicacion
+    function update()
     {
+        $sql = "UPDATE publicacion SET id_categoria = {$this->idCategoria}, imagen = '{$this->imagen}', titulo = '{$this->titulo}', precio = {$this->precio}, descripcion = '{$this->descripcion}', estado = '{$this->estado}', municipio = '{$this->municipio}' WHERE id_publicacion = {$this->id};";
+        $save = $this->db->query($sql);
 
+        $resultado = false;
+
+        if($save)
+            $resultado = true;
+
+        return $resultado;
     }
 
     //funcion para borrar la publicacion

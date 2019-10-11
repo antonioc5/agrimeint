@@ -178,9 +178,158 @@ class publicacionController{
         }
     }
 
-    //funcion para editar una publicacion
+    //funcion para mostrar el formulario de editar una publicacion
     public function editar()
     {
-    
+        //comprobamos que el usuario este identificado
+        if(utils::isIdentity()){
+            //comprobamos que nos llegue el id por get
+            if(isset($_GET['id']) && !empty($_GET['id'])){
+                // die(var_dump($_GET));
+                $id = (int) $_GET['id'];
+
+                //creamos un objeto del modelo publicacion
+                $objPublicacion = new publicacion();
+
+                //guardamos el id en el objeto
+                $objPublicacion->setId($id);
+
+                //llamamos el metodo getOne para obtener esa publicacion con ese id
+                $publicacion = $objPublicacion->getOne()->fetch_object();
+
+                //verificamos que la publicacion exista
+                if($publicacion != null){
+                    //comprobamos que esa publicacion sea del usuario que esta logueado
+                    // var_dump($publicacion);
+                    // die(var_dump($_SESSION));
+                    if($publicacion->id_usuario == $_SESSION['usuario_identificado']->id_usuario){
+                        //mandamos a la vista para que el usuario edite
+                        require_once 'views/publicaciones/editar.php';
+                    } else{
+                        echo "<div class='mensaje error'>Solo puedes editar tus publicaciones!</div>";
+                    }  
+                } else{
+                    echo "<div class='mensaje error'>Esa publicacion no existe!</div>";
+                }
+            } else{
+                echo "<div class='mensaje error'>Hubo un error</div>";
+                header("Refresh:3; url=" . base_url);
+            }
+        } else{
+            header('Location:'.base_url);
+        }
+    }
+
+    //funcion para actualizar una publicacion
+    public function actualizar()
+    {
+        //comrpobamos que el usuario este identificado 
+        if(utils::isIdentity()){
+            //verificamos que el post nos llegue bien
+            if(isset($_POST) && !empty($_POST)){
+                // die(var_dump($_POST));
+                //comprobamos que los datos del post existan
+                $id_publicacion = isset($_POST['id_publicacion']) ? $_POST['id_publicacion'] : false;
+                $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : false;
+                $imagen = isset($_POST['imagen']) ? $_POST['imagen'] : false;
+                $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : false;
+                $precio = isset($_POST['precio']) ? $_POST['precio'] : false;
+                $descripcion = isset($_POST['descripcion']) ? $_POST['descripcion'] : false;
+                $estado = isset($_POST['estado']) ? $_POST['estado'] : false;
+                $municipio = isset($_POST['municipio']) ? $_POST['municipio'] : false;
+
+                //creamos el arreglo de errores para guardar los errores de los campos
+                $errores = array();
+
+                //comprobamos que la imagen nos llegue bien
+                if(isset($_FILES) && !empty($_FILES['imagen']['name']) && !empty($_FILES['imagen']['type']) && !empty($_FILES['imagen']['tmp_name'])){
+                    // die(var_dump($_FILES));
+                    $nombre = $_FILES['imagen']['name'];
+                    $tipo = $_FILES['imagen']['type'];
+                    $ruta_temporal = $_FILES['imagen']['tmp_name'];
+
+                    //verificamos que tenga formato correcto
+                    if($tipo == "image/jpg" || $tipo == "image/jpeg" || $tipo == "image/png" || $tipo == "image/gif"){
+                        //si no existe la carpeta imagenes-subidas dentro de assets, la creamos
+                        if(!is_dir('assets/imagenes-subidas/')){  
+                            mkdir('assets/imagenes-subidas', 0777);  
+                        }
+
+                        move_uploaded_file($ruta_temporal, 'assets/imagenes-subidas/'.$nombre);  //mueve un archivo, aqui se mueve el archivo temporal a la carpeta o ruta imagenes-subidas/nombredelarchivo
+                        $imagen = $nombre;
+                    } else{
+                        $errores['imagen'] = "<div class='mensaje error'>El tipo de la imagen no es correcto</div>";
+                    }
+                }
+
+                //creamos el objeto del modelo publicacion
+                $publicacion = new publicacion();
+
+                //comprobamos que los datos vengan correctos para guardarlos en el objeto
+                if(!empty(trim($categoria)) && $categoria != false)
+                    $publicacion->setIdCategoria((int) mysqli_real_escape_string($publicacion->getDb(),$categoria));
+                else
+                    $errores['categoria'] = "<div class='mensaje error'>Error al seleccionar categoria</div>";
+
+                if(!empty(trim($titulo)) && $titulo != false)
+                    $publicacion->setTitulo(mysqli_real_escape_string($publicacion->getDb(),$titulo));
+                else
+                    $errores['titulo'] = "<div class='mensaje error'>El titulo no es correcto</div>";
+
+                if(!empty(trim($precio)) && $precio != false)
+                    $publicacion->setPrecio((float) mysqli_real_escape_string($publicacion->getDb(),$precio));
+                else
+                    $errores['precio'] = "<div class='mensaje error'>El precio no es correcto</div>";
+
+                if(!empty(trim($descripcion)) && $descripcion != false)
+                    $publicacion->setDescripcion(mysqli_real_escape_string($publicacion->getDb(),$descripcion));
+                else
+                    $errores['descripcion'] = "<div class='mensaje error'>La Descripccion viene vacia</div>";
+
+                if(!empty(trim($estado)) && $estado != false)
+                    $publicacion->setEstado(mysqli_real_escape_string($publicacion->getDb(),$estado));
+                else
+                    $errores['estado'] = "<div class='mensaje error'>El estado no es correcto</div>";
+
+                if(!empty(trim($municipio)) && $municipio != false)
+                    $publicacion->setMunicipio(mysqli_real_escape_string($publicacion->getDb(),$municipio));
+                else
+                    $errores['municipio'] = "<div class='mensaje error'>El municipio viene vacio</div>";
+
+                $publicacion->setId((int) $id_publicacion);
+                $publicacion->setImagen($imagen);
+
+                //verificamos que no haya ningun error
+                if(count($errores) == 0){
+                    //llamamos al metodo update del objeto para actualizar la publicacion en la bd
+                    $actualizado = $publicacion->update();
+                    
+                    if($actualizado){
+                        //creamos una session para indicarle al usuario que la actualizacion se guardo 
+                        if(!isset($_SESSION['publicacion'])){
+                            $_SESSION['publicacion'] = "<div class='mensaje'>Publicacion actualizada con exito!</div>";
+                        }
+                    } else{
+                        if(!isset($_SESSION['publicacion'])){
+                            $_SESSION['publicacion'] = "<div class='mensaje error'>Hubo un error al actualizar la publicacion</div>";
+                        }
+                    }
+                } else{
+                    //creamos una session para los errores
+                    if(!isset($_SESSION['publicacion_error'])){
+                        $_SESSION['publicacion_error']  = $errores;
+                        }
+                    }
+            } else{
+                echo "<div class='mensaje error'>Hubo un error</div>";
+                header("Refresh:3; url=" . base_url);
+            }
+
+            header('Location:'.base_url.'?controller=publicacion&action=editar&id='.$id_publicacion);
+
+        } else{
+            header('Location:'.base_url);
+        }
+
     }
 }

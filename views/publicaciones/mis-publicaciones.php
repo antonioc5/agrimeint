@@ -20,7 +20,6 @@
         <?php endwhile; ?>
     </div>
 
-
 <?php else : ?>
     <h3 class="fw-300 centrar-texto">No tienes ninguna publicacion!</h3>
 
