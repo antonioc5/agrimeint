@@ -10,7 +10,7 @@
                 <div class="contenido-publicacion">
                     <h3><?= substr($publicacion->titulo, 0, 30) ?></h3>
                     <p><i class="fas fa-user"></i><?= $publicacion->nombre ?> <?= $publicacion->apellidos ?></p>
-                    <p><i class="fas fa-map-marker-alt"></i> <?= $publicacion->estado ?>, <?= $publicacion->municipio ?></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <?= $publicacion->municipio ?>, <?= $publicacion->estado ?></p>
                     <p><?= substr($publicacion->descripcion, 0, 180) ?>...</p>
                     <p class="precio"><i class="fas fa-tag"></i>$<?= $publicacion->precio ?></p>
 

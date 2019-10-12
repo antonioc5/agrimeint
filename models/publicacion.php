@@ -106,7 +106,11 @@ class publicacion
     //funcion para obtener todas las publicaciones 
     function getAll()
     {
-        $publicaciones = $this->db->query("SELECT * FROM publicacion ORDER BY id_publicacion DESC;");
+        $sql ="SELECT * FROM publicacion INNER JOIN usuario 
+            ON usuario.id_usuario = publicacion.id_usuario 
+            ORDER BY publicacion.id_publicacion DESC;";
+
+        $publicaciones = $this->db->query($sql);
 
         return $publicaciones;
     }
@@ -119,7 +123,11 @@ class publicacion
     //funcion para obtener publicaciones aleatorias
     function getRandom($limit)
     {
-        $publicaciones = $this->db->query("SELECT * FROM publicacion ORDER BY RAND() LIMIT $limit;");
+        $sql ="SELECT * FROM publicacion INNER JOIN usuario 
+            ON usuario.id_usuario = publicacion.id_usuario 
+            ORDER BY RAND() LIMIT $limit;";
+
+        $publicaciones = $this->db->query($sql);
 
         return $publicaciones;
     }

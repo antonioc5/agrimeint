@@ -10,20 +10,29 @@ class publicacionController{
         //renderizar las vistas
         require_once 'views/usuarios/registro-entrar.php';
         require_once 'views/layout/bienvenida.php';
-        require_once 'views/publicaciones/destacadas.php';
+        $this->verDestacadas();
     }
 
     //funcion para ver todas las publicaciones
     public function verTodas()
     {
-        $publicaciones = new publicacion();
+        $publicacion = new publicacion();
 
-        $todas = $publicaciones->getAll();
+        $publicaciones = $publicacion->getAll();
 
         require_once 'views/publicaciones/todas.php';
     }
 
-    //se vera una sola publicacion
+    public function verDestacadas()
+    {
+        $publicacion = new publicacion();
+
+        $publicaciones = $publicacion->getRandom(9);
+        
+        require_once 'views/publicaciones/destacadas.php';
+    }
+
+    //funcion para ver solo una publicacion
     public function verPublicacion()
     {
         
