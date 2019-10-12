@@ -32,6 +32,37 @@ class publicacionController{
         require_once 'views/publicaciones/destacadas.php';
     }
 
+    //funcion para buscar publicaciones
+    public function buscar()
+    {
+        //comprobamos que nos llegue bien el post
+        if(isset($_POST) && !empty($_POST)){
+            // die(var_dump($_POST));
+            //creamos un objeto del modelo publicacion
+            $objPublicacion = new publicacion();
+
+            //comprobamos que los datos del post existan
+            $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : false;
+
+            //comprobamos que los datos vengan correctos
+            if(!empty(trim($titulo)) && $titulo!=false){
+                //llamamos al metodo que nos regresa la busqueda y la guardamos en la variable
+                $publicaciones = $objPublicacion->busquedaPublicaciones($titulo);
+            } else{
+                //los datos vienen vacios o no existen
+                //por lo tanto no hay busqueda y mostramos todas las publicaciones
+                $publicaciones = $objPublicacion->getAll();
+            }
+
+            //mandamos a la vista
+            require_once 'views/publicaciones/todas.php';
+
+        } else{
+            echo "<div class='mensaje error'>Hubo un error!</div>";
+            header("Refresh:4; url=" . base_url);
+        }
+    }
+
     //funcion para ver solo una publicacion
     public function verPublicacion()
     {

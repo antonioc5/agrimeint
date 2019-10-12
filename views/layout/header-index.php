@@ -34,8 +34,8 @@
                     <?php if(utils::isIdentity()) : ?>
                     <nav class="navegacion">
                         <a href="<?=base_url?>?controller=usuario&action=miCuenta">mi cuenta</a>
-                        <a href="<?=base_url?>?controller=publicacion&action=misPublicaciones">mis publicaciones</a>
                         <a href="<?=base_url?>?controller=publicacion&action=verTodas">Publicaciones</a>
+                        <a href="<?=base_url?>?controller=publicacion&action=misPublicaciones">mis publicaciones</a>
                         <a href="<?=base_url?>?controller=usuario&action=logout">salir</a>
                     </nav>
                     <?php endif; ?>

@@ -197,4 +197,16 @@ class publicacion
 
         return $publicaciones;
     }
+
+    //funcion para buscar publicaciones
+    function busquedaPublicaciones($titulo)
+    {
+        $sql = "SELECT * FROM publicacion INNER JOIN usuario 
+            ON usuario.id_usuario = publicacion.id_usuario 
+            WHERE publicacion.titulo LIKE '%{$titulo}%';";
+
+        $publicacion = $this->db->query($sql);
+
+        return $publicacion;
+    }
 }

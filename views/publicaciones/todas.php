@@ -1,8 +1,8 @@
 <div class="seccion contenedor">
 
     <!-- buscador -->
-    <form action="" method="POST" class="buscador">
-        <input type="text" placeholder="Busca un producto...">
+    <form action="<?=base_url?>?controller=publicacion&action=buscar" method="POST" class="buscador">
+        <input type="text" name="titulo" placeholder="Busca un producto...">
         <button type="submit">
             <i class="fa fa-search"></i>
         </button>    
