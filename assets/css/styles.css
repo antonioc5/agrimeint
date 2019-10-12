@@ -364,11 +364,6 @@ h4 {
 }
 
 /* Formularios */
-.contacto p {
-    font-size: 1.4rem;
-    color: #4f4f4f;
-    margin: 2rem 0 0 0;
-}
 legend {
     font-size: 2rem;
     color: #4f4f4f;
@@ -449,4 +444,30 @@ textarea {
     width: 50%;
 }
 
+
+/*ver-Publicacion*/
+.resumen-publicacion h2{
+    color: #333;
+    text-transform: capitalize;
+    font-weight: 700;
+    font-size: 4rem;
+}
+
+.resumen-publicacion p i,
+.resumen-publicacion p span{
+    color: #366948;
+    font-weight: 700;
+    font-size: 3rem;
+    margin-right: 16px;
+}
+
+.resumen-publicacion p{
+    font-size: 2rem;
+}
+
+@media (min-width: 768px){
+    .resumen-publicacion{
+        width: 60%;
+    }
+}
 

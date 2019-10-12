@@ -135,8 +135,12 @@ class publicacion
     //funcion para obtener una sola publicacion 
     function getOne()
     {
-        $publicacion = $this->db->query("SELECT * FROM publicacion WHERE id_publicacion = {$this->getId()};");
-        
+        $sql ="SELECT * FROM publicacion INNER JOIN usuario 
+            ON usuario.id_usuario = publicacion.id_usuario 
+            WHERE publicacion.id_publicacion = {$this->getId()};";
+
+        $publicacion = $this->db->query($sql);
+
         return $publicacion;
     }
 

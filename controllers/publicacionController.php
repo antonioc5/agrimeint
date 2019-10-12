@@ -35,7 +35,36 @@ class publicacionController{
     //funcion para ver solo una publicacion
     public function verPublicacion()
     {
-        
+        //comprobamos que el usuario este identificado
+        if(utils::isIdentity()){
+            //comprobamos que nos llegue el id por get
+            if(isset($_GET['id']) && !empty($_GET['id'])){
+                // die(var_dump($_GET));
+                $id = $_GET['id'];
+
+                //creamos un objeto del modelo publicacion y llamamos al metodo getOne para obtener la publicacion con ese id
+                $objPublicacion = new publicacion();
+                $objPublicacion->setId($id);
+
+                $publicacion = $objPublicacion->getOne();
+
+                //comprobamos que la publicacion si exista
+                if($publicacion->num_rows != 0){
+                    //mandamos a la vista ver-publicacion
+                    $publicacion = $publicacion->fetch_object();
+                    require_once 'views/publicaciones/ver-publicacion.php';
+                } else{
+                    echo "<div class='mensaje error'>No existe esa publicacion!</div>";
+                    header("Refresh:5; url=".base_url);
+                }
+            } else{
+                echo "<div class='mensaje error'>Hubo un error</div>";
+                header('Location:'.base_url);
+            }
+        } else{
+            echo "<div class='mensaje error'>Debes iniciar sesion para ver la publicacion!</div>";
+            header("Refresh:5; url=" . base_url);
+        }
     }
 
     //funcion para solo ver las publicaciones de un usuario
